@@ -66,7 +66,6 @@ class WriteToS3 {
             String body = getObjectBodyFrom(objectFound);
 
             assertThat(body, is(MESSAGE));
-            assertQueueIsEmpty();
         });
     }
 
@@ -76,10 +75,6 @@ class WriteToS3 {
 
     private void waitFor(ThrowingRunnable assertionMethod) {
         given().ignoreExceptions().atMost(5, TimeUnit.SECONDS).await().untilAsserted(assertionMethod);
-    }
-
-    private void assertQueueIsEmpty() {
-        assertThat(sqs.receiveMessage(mainQueueURL).getMessages().size(), is(0));
     }
 
     private String placeMessageInQueue() {
